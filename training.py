@@ -55,7 +55,17 @@ def main():
     devFeatures = np.nan_to_num(devFeatures, copy=False)
     devLabels = np.nan_to_num(devLabels, copy=False)
 
-    svmModel.score(testFeatures, testLabels)
-    svmModel.score(devFeatures, devLabels)
+    # cross-validate with dev
+    # from sklearn.model_selection import cross_validate
+    cvesuRlts = cross_validate(svmModel, devFeatures, devLabels) # can customize scoring method
+    avg_fit_time = np.mean(cv_results["fit_time"])
+    avg_score_time = np.mean(cv_results["score_time"])
+    avg_score = np.mean(cv_results["test_score"])
+
+    testScore = svmModel.score(testFeatures, testLabels)
+    #svmModel.score(devFeatures, devLabels)
+
+    print("Dev results: " + cvResults)
+    print("Test results: " + testScore)
 
 main()
