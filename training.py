@@ -18,44 +18,32 @@ def load_pickle(pickle_file):
         raise
     return pickle_data
 
+def splitFeaturesAndLabels(data):
+    features = data[:, :(data.shape[1] - 1)]
+    labels = data[:, (data.shape[1] - 1)]
+
+    return features, labels
+
 
 def main():
+    #load pickle files into respective matrices
     trainSet = load_pickle(os.path.join(data_path, 'trainData.pkl'))
-    print(trainSet, trainSet.shape)
-
     devSet = load_pickle(os.path.join(data_path, 'devData.pkl'))
-    print(devSet, devSet.shape)
-
     testSet = load_pickle(os.path.join(data_path, 'testData.pkl'))
-    print(testSet, testSet.shape)
 
-    trainFeatures = trainSet[:, :332800]
-    trainLabels = trainSet[:, 332800]
-    print(trainFeatures.dtype)
-    print(trainLabels.dtype)
+    trainSet = np.nan_to_num(trainSet, copy=False)
+    devSet = np.nan_to_num(devSet, copy=False)
+    testSet = np.nan_to_num(testSet, copy=False)
 
-    #replace NaNs with 0s
-    trainFeatures = np.nan_to_num(trainFeatures, copy=False)
-    trainLabels = np.nan_to_num(trainLabels, copy=False)
+    trainFeatures, trainLabels = splitFeaturesAndLabels(trainSet)
+    devFeatures, devLabels = splitFeaturesAndLabels(devSet)
+    testFeatures, testLabels = splitFeaturesAndLabels(testSet)
 
-    np.isnan(trainFeatures).any()
-
+    print('training...\n')
     svmModel = svm.SVR(gamma='scale')
     svmModel.fit(trainFeatures, trainLabels)
 
-    testFeatures = testSet[:, :332800]
-    testLabels = testSet[:, 332800]
-
-    testFeatures = np.nan_to_num(testFeatures, copy=False)
-    testLabels = np.nan_to_num(testLabels, copy=False)
-
-    devFeatures = devSet[:, :332800]
-    devLabels = devSet[:, 332800]
-
-    devFeatures = np.nan_to_num(devFeatures, copy=False)
-    devLabels = np.nan_to_num(devLabels, copy=False)
-
-    svmModel.score(testFeatures, testLabels)
-    svmModel.score(devFeatures, devLabels)
+    #svmModel.score(testFeatures, testLabels)
+    print(svmModel.score(devFeatures, devLabels))
 
 main()
