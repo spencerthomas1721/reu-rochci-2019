@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 #ALl of your data must be in this folder, MUST CHANGE IT
-data_path = "/Users/Alex Giacobbi/Desktop/ETS/"
+data_path = os.getcwd()
 #For each video, we have several labels, label 0 is the hirability score, so we are using that.
 target_label_index = 0
 
