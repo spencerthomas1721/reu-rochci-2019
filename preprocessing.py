@@ -2,8 +2,13 @@ import pickle
 import os
 import numpy as np
 
+<<<<<<< HEAD
 #All of your data must be in this folder, MUST CHANGE IT
 data_path = "/Users/Alex Giacobbi/Desktop/ETS/"
+=======
+#ALl of your data must be in this folder, MUST CHANGE IT
+data_path = os.getcwd()
+>>>>>>> 0d7b46f2fe6574670cf46c773feb45e89792023c
 #For each video, we have several labels, label 0 is the hirability score, so we are using that.
 target_label_index = 0
 
@@ -20,7 +25,7 @@ def load_pickle(pickle_file):
         raise
     return pickle_data
 
-#Given the name of the file, it will return all data relevant to that file assuming that the function has access 
+#Given the name of the file, it will return all data relevant to that file assuming that the function has access
 #to the variables declared above
 def read_a_file(file_name):
     text_data = np.array(text[file_name]['features'])
@@ -33,18 +38,15 @@ def read_a_file(file_name):
 
 def flattenSentence(sentIn, maxWords, dimension):
     sent = np.array(sentIn)
-    
     if (sent.shape[0] >= maxWords):
         words = sent[:maxWords].flatten()
     else:
         sent = np.append(sent, np.zeros((maxWords - sent.shape[0], dimension)))
         words = sent.flatten()
-        
     return words
 
 
 def flattenAllText(sentMatrix, maxSents, maxWords, dimension):
-    
     if (sentMatrix.shape[0] >= maxSents):
         return np.array([flattenSentence(sentMatrix[i], maxWords, dimension) for i in range(maxSents)]).flatten()
     else:
@@ -52,10 +54,8 @@ def flattenAllText(sentMatrix, maxSents, maxWords, dimension):
         s = np.append(s, np.zeros(((maxSents - sentMatrix.shape[0]) * dimension * maxWords)))
         return s
 
-
-
 def main():
-    #The revised_id_list.pkl contains the name of all the video files arranged in three groups:train,dev,test 
+    #The revised_id_list.pkl contains the name of all the video files arranged in three groups:train,dev,test
     dataset_id_file = os.path.join(data_path, "revised_id_list.pkl")
     dataset_id = load_pickle(dataset_id_file)
     train = dataset_id['train']
@@ -98,10 +98,10 @@ def main():
 
     with open(os.path.join(data_path, 'trainData.pkl'), 'wb') as fout:
         pickle.dump(trainMatrix, fout)
-        
+
     with open(os.path.join(data_path, 'devData.pkl'), 'wb') as fout:
         pickle.dump(devMatrix, fout)
-        
+
     with open(os.path.join(data_path, 'testData.pkl'), 'wb') as fout:
         pickle.dump(testMatrix, fout)
 
