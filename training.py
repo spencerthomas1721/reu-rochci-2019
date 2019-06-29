@@ -3,7 +3,7 @@ import pickle as pkl
 import os
 from sklearn import svm
 
-data_path = "/Users/Alex Giacobbi/Desktop/ETS/"
+data_path = os.getcwd()
 
 #Just a helper function for loading a .pkl file.
 def load_pickle(pickle_file):
